@@ -1523,6 +1523,7 @@ class Scheduler(ServerNode):
         extensions=None,
         validate=None,
         scheduler_file=None,
+        external_address=None,
         security=None,
         worker_ttl=None,
         idle_timeout=None,
@@ -1557,6 +1558,8 @@ class Scheduler(ServerNode):
         self.service_kwargs = service_kwargs or {}
         self.services = {}
         self.scheduler_file = scheduler_file
+        if external_address:
+                self.external_address = external_address
         worker_ttl = worker_ttl or dask.config.get("distributed.scheduler.worker-ttl")
         self.worker_ttl = parse_timedelta(worker_ttl) if worker_ttl else None
         idle_timeout = idle_timeout or dask.config.get(
