@@ -171,6 +171,8 @@ UNKNOWN_TASK_DURATION = declare(
     parse_timedelta(dask.config.get("distributed.scheduler.unknown-task-duration")),
 )
 
+RESOLVE_WORKER_HOSTNAME = dask.config.get("distributed.scheduler.resolve-worker-hostname")
+
 DEFAULT_EXTENSIONS = [
     LockExtension,
     PublishExtension,
@@ -2148,7 +2150,7 @@ class Scheduler(ServerNode):
         self,
         comm=None,
         address=None,
-        resolve_address=True,
+        resolve_address=RESOLVE_WORKER_HOSTNAME,
         now=None,
         resources=None,
         host_info=None,
@@ -2224,7 +2226,7 @@ class Scheduler(ServerNode):
         keys=(),
         nthreads=None,
         name=None,
-        resolve_address=True,
+        resolve_address=RESOLVE_WORKER_HOSTNAME,
         nbytes=None,
         types=None,
         now=None,
@@ -5760,7 +5762,7 @@ class Scheduler(ServerNode):
         for resource, quantity in ws._resources.items():
             del self.resources[resource][worker]
 
-    def coerce_address(self, addr, resolve=True):
+    def coerce_address(self, addr, resolve=RESOLVE_WORKER_HOSTNAME):
         """
         Coerce possible input addresses to canonical form.
         *resolve* can be disabled for testing with fake hostnames.
