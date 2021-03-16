@@ -351,7 +351,7 @@ class SpecCluster(Cluster):
                     opts["name"] = name
                 if isinstance(cls, str):
                     cls = import_term(cls)
-                worker = cls(self.scheduler.address, **opts)
+                worker = cls(getattr(self.scheduler, "external_address", None) or self.scheduler.address, **opts)
                 self._created.add(worker)
                 workers.append(worker)
             if workers:
