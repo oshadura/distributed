@@ -3316,11 +3316,14 @@ class Scheduler(SchedulerState, ServerNode):
         preload=None,
         preload_argv=(),
         plugins=(),
+        external_address=None,
         **kwargs,
     ):
         self._setup_logging(logger)
 
         # Attributes
+        if external_address:
+            self.external_address = external_address
         if allowed_failures is None:
             allowed_failures = dask.config.get("distributed.scheduler.allowed-failures")
         self.allowed_failures = allowed_failures
